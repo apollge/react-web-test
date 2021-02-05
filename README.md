@@ -10,74 +10,64 @@ To help you understand wether or not you API requests are failing or successful,
 ### Setup
 
 * `Fork` and `clone` this repository.
-* `cd` into the project directory.
+* `cd` into the project directories.
 * Run `npm install`.
 * Run `npm start`.
-* In a seperate terminal, `cd` into the project directory.
 
 ### API Documentation
 
-The Base API url is located at `./src/helper/axios.jsx`
+The Base API url is located at `portal/src/helper/axios.jsx`
 ```
 // Default base url
 import axios from 'axios'
 
 export default axios.create({
-  baseURL: 'https://reqres.in/api/'
+  baseURL: 'https://localhost:5000/products'
 })
 ```
 
-Please reference [this](https://reqres.in/) API documentation when completing the project steps.
+Please reference [this](api/README.md) API documentation when completing the project steps.
 
 # Requirements
 
-First use `useEffect` hook to fetch list of users and display `usersToDisplay` state in a form of table. To add some design, you can free to use any of css framework you choose.
+First use `useEffect` hook to fetch display list of available products in the catalog and display it in a form of table. for the design you can free to use any of css framework you choose.
 
 ### Step 1: GET
 
-In this first step, we'll make use of `axios` to get the `Get All Users` button to work. When fetching data from a server you should always use a GET request.
+In this first step, we'll make use of `axios` to get the `Get available products` button to work. When fetching data from a server you should always use a `GET` request.
 
-
-#### Instructions
 * Open `./src/App.js`.
-* Locate the pre-made `getUsers()` method.
-* Using `axios` and the provided API documentation make a `GET` request to receive all the users.
-	* If the request is successful, use `setUsers()` state to update the value of `usersToDisplay` and use `toast.success` to fetch success message.
+* Locate the pre-made `getProducts()` method.
+* Using `axios` and the provided API documentation make a `GET` request to receive all the products.
+	* If the request is successful, use `addToCart()` state to update the value of `cartList` and use `toast.success` to fetch success message.
 	* If the request is unsuccessful, use `toast.error`	.
 	
 ### Step 2: UPDATE
 
-In this step, we'll make use of `axios` to update the `name` and `job` of a user. When modifying/updating data on a server, typically, you'll use a `PUT` request.
+In this step, we'll make use of `axios` to update the added product in the cart. When modifying/updating data on a server, typically, you'll use a `PUT` request.
 
 * Open `./src/App.js`.
-* Locate the pre-made `updateUser()` method and add necessary parameters like `id`, `name` and `job`.
-* If the request is successful, use `setUsers()` to update the value of `usersToDisplay` and use `toast.success` to display success message.
+* Locate the pre-made `updateProduct()` method and add the necessary parameters.
+* If the request is successful, use `addToCart()` to update the value of `cartList` and use `toast.success` to display success message.
 * If the request is unsuccessful, use toast.error.
 
 ### Step 3: CREATE
 
-In this step, we'll make use of `axios` to get the `Add a User` button to work. When creating new data on a server you should always use a `POST` request.
-
-#### Instructions
+In this step, we'll make use of `axios` to get the `Add a Product` button to work. When creating new data on a server you should always use a `POST` request.
 
 * Open `./src/App.js`.
-* Locate the pre-made `addUser()` method.
-* If the request is successful, use `setUsers()` to update the value of `usersToDisplay` and use `toast.success`.
+* Locate the pre-made `addProducts()` method.
+* If the request is successful, use `addToCart()` to update the value of `cartList` and use `toast.success`.
 * If the request is unsuccessful, use `toast.error`.
 
 ### Step 4 : DELETE
 
 In this step, we'll make use of `axios` to delete a user. When deleting data on a server you should always use a DELETE request.
 
-#### Instructions
 
 * Open `./src/App.js`.
-* Locate the pre-made `deleteUser()` method and add the necessary parameter like `id`.
-* If the request is successful, use `setUsers()` to update the value of `usersToDisplay` and use `toast.success`.
+* Locate the pre-made `deleteProduct()` method and add the necessary parameter.
+* If the request is successful, use `addToCart()` to update the value of `cartList` and use `toast.success`.
 * If the request is unsuccessful, use `toast.error`.
-
-### Bonus
-
-If there is extra time, try to complete your application with `registration` and `login`.
 
 # Good Luck!
