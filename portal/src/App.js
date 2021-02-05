@@ -11,12 +11,12 @@ function App() {
      const [cartList, addToCart] = useState([]);
      
      useEffect(() => {
-       displayUsers();
+       displayCatalog();
      }, [])
 
-     const displayUsers = () => {
+     const displayCatalog = () => {
        axios
-            .get('users')
+            .get('catalog?key=3fc45675')
             .then(response => {
                // Continue your code...
             })
