@@ -20,18 +20,14 @@ app
   .route('/products/catalog')
   .get(ctrl.getAllProducts)
   .post(ctrl.addNewProduct)
+  .put(ctrl.updateProduct)
+  .delete(ctrl.deleteProduct)
 
-app
-  .route('/products/cart')
-  .get(ctrl.getCart)
-  .put(ctrl.updateCartQuantity)
+app.route('/products/cart').get(ctrl.getCart).put(ctrl.updateCartQuantity)
 
 app.route('/products/cart/checkout').delete(ctrl.cartCheckout)
 
-app
-  .route('/products/cart/:id')
-  .post(ctrl.addToCart)
-  .delete(ctrl.removeFromCart)
+app.route('/products/cart/:id').post(ctrl.addToCart).delete(ctrl.removeFromCart)
 
 const port = 5000
 app.listen(port, () =>

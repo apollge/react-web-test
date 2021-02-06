@@ -883,8 +883,8 @@
     "products": [
       {
         "id": 1,
-        "name": "Mountains Baseball Cap",
-        "description": "Solid Black",
+        "name": "Mountains Baseball Cap 456",
+        "description": "Solid Black 456",
         "category": "hat",
         "price": 45,
         "image": "https://firebasestorage.googleapis.com/v0/b/firebase-dev-assessment.appspot.com/o/products%2Fhat-1.jpg?alt=media&token=af7620f5-e9a1-4108-939c-472c48307528"
@@ -907,8 +907,8 @@
       },
       {
         "id": 4,
-        "name": "Ripple Effect",
-        "description": "Blue",
+        "name": "Ripple Effect 123",
+        "description": "Blue 123",
         "category": "shirt",
         "price": 25,
         "image": "https://firebasestorage.googleapis.com/v0/b/firebase-dev-assessment.appspot.com/o/products%2Fshirt-1.jpeg?alt=media&token=0fbf36a3-a477-49f7-aa99-2bdb1030c449"
@@ -920,14 +920,6 @@
         "category": "shirt",
         "price": 33,
         "image": "https://firebasestorage.googleapis.com/v0/b/firebase-dev-assessment.appspot.com/o/products%2Fshirt-3.jpeg?alt=media&token=4dec772a-65ec-481b-bc60-a7c80f5b2c38"
-      },
-      {
-        "id": 6,
-        "name": "Black T Shirt",
-        "description": "Moon",
-        "category": "shirt",
-        "price": 25,
-        "image": "https://firebasestorage.googleapis.com/v0/b/firebase-dev-assessment.appspot.com/o/products%2Fshirt-4.jpeg?alt=media&token=1e1b81c8-a24f-4d34-85e4-153e4d00470e"
       },
       {
         "id": 7,

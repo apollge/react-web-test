@@ -18,7 +18,7 @@ module.exports = {
     // Create a new empty cart and a copy of all products for the API key and put into db.json
     db.set(apiKey, {
       cart: [],
-      products: cloneDeep(products)
+      products: cloneDeep(products),
     }).write()
 
     // Send the API key back to the client
@@ -29,6 +29,7 @@ module.exports = {
   requireApiKey: (req, res, next) => {
     // Destructure the API key from the request query
     const { key } = req.query
+
     // Check for an API key in the request query
     if (key === undefined || key.length === 0) {
       // The request was missing an API key
@@ -59,31 +60,32 @@ module.exports = {
   getAllProducts: (req, res) => {
     // Get the possible filter types and API key from the request query
     const { min, max, name, category, id, key } = req.query
+
     // Get the user's products list
-    let filteredProducts = db.get(`${key}.products`).value()
+    let filteredProducts = db.get(`${key}.products`).sortBy('name').value()
 
     if (min) {
-      filteredProducts = filteredProducts.filter(product => {
+      filteredProducts = filteredProducts.filter((product) => {
         return product.price >= min
       })
     }
     if (max) {
-      filteredProducts = filteredProducts.filter(product => {
+      filteredProducts = filteredProducts.filter((product) => {
         return product.price <= max
       })
     }
     if (name) {
-      filteredProducts = filteredProducts.filter(product => {
+      filteredProducts = filteredProducts.filter((product) => {
         return product.name.includes(name)
       })
     }
     if (category) {
-      filteredProducts = filteredProducts.filter(product => {
+      filteredProducts = filteredProducts.filter((product) => {
         return product.category === category
       })
     }
     if (id) {
-      filteredProducts = filteredProducts.filter(product => {
+      filteredProducts = filteredProducts.filter((product) => {
         return product.id === id
       })
     }
@@ -142,7 +144,7 @@ module.exports = {
 
     // Determine if the product is already in the user's cart
     const products = db.get(`${key}.cart`).value()
-    let matchIndex = products.findIndex(product => product.id === +id)
+    let matchIndex = products.findIndex((product) => product.id === +id)
 
     if (matchIndex != -1) {
       // The product is already in the cart
@@ -152,7 +154,7 @@ module.exports = {
       // Update the product's quantity property by 1
       db.get(`${key}.cart[${matchIndex}]`)
         .assign({
-          quantity: ++product.quantity
+          quantity: ++product.quantity,
         })
         .write()
 
@@ -164,7 +166,7 @@ module.exports = {
       // Find the object of property to add by id
       let productToAdd = db
         .get(`${key}.products`)
-        .find(product => product.id === +id)
+        .find((product) => product.id === +id)
         .value()
 
       // Make sure a valid ID was used to avoid bugs
@@ -176,9 +178,7 @@ module.exports = {
       productToAdd.quantity = 1
 
       // Push the new product to the end of the user's cart
-      db.get(`${key}.cart`)
-        .push(productToAdd)
-        .write()
+      db.get(`${key}.cart`).push(productToAdd).write()
 
       // Get the updated cart
       const updated_cart = db.get(`${key}.cart`).value()
@@ -202,20 +202,16 @@ module.exports = {
 
     // Check to see if the product is in the cart already
     const cart = db.get(`${key}.cart`)
-    const cartIndex = cart.findIndex(p => p.id === +id)
+    const cartIndex = cart.findIndex((p) => p.id === +id)
 
     if (cartIndex !== -1) {
       // The product is in the cart
       if (quantity <= 0) {
         // Remove the product entirely from the cart
-        db.get(`${key}.cart`)
-          .remove({ id })
-          .write()
+        db.get(`${key}.cart`).remove({ id }).write()
       } else if (quantity > 0) {
         // Update the product's quantity to the passed in quantity
-        db.get(`${key}.cart[${cartIndex}]`)
-          .assign({ quantity })
-          .write()
+        db.get(`${key}.cart[${cartIndex}]`).assign({ quantity }).write()
       }
 
       // Get the updated cart
@@ -236,7 +232,7 @@ module.exports = {
 
     // Check to see if the product is already in the user's cart
     const cart = db.get(`${key}.cart`).value()
-    let matchIndex = cart.findIndex(product => product.id === +id)
+    let matchIndex = cart.findIndex((product) => product.id === +id)
 
     if (matchIndex != -1) {
       // The product is already in the user's cart
@@ -247,14 +243,12 @@ module.exports = {
         // Quantity is greator than one, decrease it by one
         db.get(`${key}.cart[${matchIndex}]`)
           .assign({
-            quantity: --product.quantity
+            quantity: --product.quantity,
           })
           .write()
       } else {
         // Quantity is equal to one, remove the product entirely
-        db.get(`${key}.cart`)
-          .remove({ id: product.id })
-          .write()
+        db.get(`${key}.cart`).remove({ id: product.id }).write()
       }
 
       // Get the updated cart
@@ -279,5 +273,40 @@ module.exports = {
     const empty_cart = db.get(`${key}.cart`).value()
     // Send the empty cart to the client
     res.send(empty_cart)
-  }
+  },
+
+  updateProduct: (req, res) => {
+    const { key } = req.query
+
+    const { category, description, id, image, name, price } = req.body
+
+    const products = db.get(`${key}.products`).value()
+    const productToUpdate = products.filter((product) => product.id === id)[0]
+
+    const updatedProduct = {
+      ...productToUpdate,
+      category,
+      description,
+      id,
+      image,
+      name,
+      price,
+    }
+
+    db.get(`${key}.products`).find({ id }).assign(updatedProduct).write()
+
+    const updatedProducts = db.get(`${key}.products`).sortBy('name').value()
+    res.send(updatedProducts)
+  },
+
+  deleteProduct: (req, res) => {
+    const { key } = req.query
+
+    const { id } = req.body
+
+    db.get(`${key}.products`).remove({ id }).write()
+
+    const updatedProducts = db.get(`${key}.products`).sortBy('name').value()
+    res.send(updatedProducts)
+  },
 }
